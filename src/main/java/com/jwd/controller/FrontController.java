@@ -1,37 +1,43 @@
 package com.jwd.controller;
 
+import com.jwd.exception.MyCustomException;
+import com.jwd.service.Calculator;
+import com.jwd.service.calculatorImpl.Subtract;
+import com.jwd.service.calculatorImpl.Sum;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class FrontController extends HttpServlet {
     public static final Logger LOGGER = Logger.getLogger(FrontController.class.getName());
-    public static final String COMMAND = "command", SUM = "sum", NUMBER_1 = "number-1", NUMBER_2 = "number-2";
+    public static final String COMMAND = "command", OPERATION = "operation", SUM = "sum", SUBTRACT = "subtract", NUMBER_1 = "number-1", NUMBER_2 = "number-2";
+    public Map<String, Calculator> commands = new HashMap<>();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final String commandTitle = req.getParameter(COMMAND).trim();
-        LOGGER.info("CommandTitle=" + commandTitle);
-
-        if (SUM.equals(commandTitle)) {
-            sum(req);
-        }
-        req.getRequestDispatcher("index.jsp").forward(req, resp);
+    public void init() {
+        commands.put(SUM, new Sum());
+        commands.put(SUBTRACT, new Subtract());
     }
 
-    private void sum(HttpServletRequest req) {
-        final int number1 = Integer.parseInt(req.getParameter(NUMBER_1));
-        final int number2 = Integer.parseInt(req.getParameter(NUMBER_2));
-        final StringBuilder sb = new StringBuilder()
-                .append(number1)
-                .append("+")
-                .append(number2)
-                .append("=")
-                .append(number1 + number2);
-        req.setAttribute("result", sb);
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+//        final String commandTitle = req.getParameter(COMMAND).trim();
+//        LOGGER.info("CommandTitle=" + commandTitle);
+            final String operation = req.getParameter(OPERATION).trim();
+
+            Calculator calculator = commands.get(operation);
+            calculator.calculate(req, resp);
+        } catch (MyCustomException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

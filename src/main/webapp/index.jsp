@@ -9,8 +9,14 @@
         <p>Message from server: ${requestScope.result}</p>
         <br/>
 
-        <p>GET | SUM two values</p>
+        <p>GET</p>
         <form method="get" action="FrontController">
+
+            <p>Please select your operation:</p>
+            <input type="radio" id="sum" name="operation" value="sum">
+            <label for="sum">SUM</label><br>
+            <input type="radio" id="subtract" name="operation" value="subtract">
+            <label for="subtract">SUBTRACT</label><br>
             <input type="hidden" name="command" value="sum"/>
             <input type="number" name="number-1" value="0"/>
             <input type="number" name="number-2" value="0"/>
