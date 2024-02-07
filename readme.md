@@ -1,22 +1,33 @@
+---
+Deploy
+---
 1) Run maven "install"
 2) copy target/MavenServlet-1.0-SNAPSHOT.war to
    C:\dev\apache-tomcat-8.5.70\webapps
 3) Run C:\dev\apache-tomcat-8.5.70\bin\startup.bat
 4) Go to http://localhost:8080/MavenServlet-1.0-SNAPSHOT/
+
+or use Smart Tomcat plugin in Idea
+NB! Do not forget to add mvn install goal before build in "Before launch" section
+![img.png](img.png)
     
 
-
-----
-Create
-----
-----------------
+---
+Guide to create servlet from scratch
+---
+Content:
+- Maven Servlet Guide
+- Raw Servlet Guide
+---
+---
 Maven Servlet
-----------------
+---
 0. New project -> Create from archetype -> org.apache.maven.archetypes:maven-archetype-webapp
-----------------
+---
 1. add .gitignore
-----------------
+---
 2. web.xml paste
+```
    <web-app>...
       <servlet>
       <servlet-name>index</servlet-name>
@@ -27,17 +38,18 @@ Maven Servlet
       <url-pattern>/FrontController</url-pattern>
       </servlet-mapping>
    ...</web-app>
-----------------
-3. Add to pom.xml
-...
+```
+---
+3. Add to pom.xml 
+```
    <dependencies>
       <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>3.1.0</version>
-      </dependency>
-...
-----------------
+   </dependency>
+```
+---
 4. Create com.jwd.controller.FrontController which extends with javax.servlet.http.HttpServlet
 ----------------
 5. FrontController @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -45,11 +57,13 @@ Maven Servlet
 6. Replace body with req.getRequestDispatcher("index.jsp").forward(req, resp);
 ----------------
 7. Create file web/index.jsp with
+```
 <html>
     <body>
         <h1>Hello my custom servlet</h1>
     </body>
 </html>
+```
 ----------------
 8. set JAVA_HOME or JRE_HOME in environment variable (It is required to start server).
 ----------------
@@ -78,19 +92,21 @@ Raw Servlet
 3. create file ProjectName/web/WEB-INF/web.xml
 ----------------
 4. web.xml paste
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns="http://java.sun.com/xml/ns/javaee"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-<servlet>
-<servlet-name>index</servlet-name>
-<servlet-class>com.jwd.controller.FrontController</servlet-class>
-</servlet>
-<servlet-mapping>
-<servlet-name>index</servlet-name>
-<url-pattern>/FrontController</url-pattern>
-</servlet-mapping>
+   <servlet>
+      <servlet-name>index</servlet-name>
+      <servlet-class>com.jwd.controller.FrontController</servlet-class>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>index</servlet-name>
+      <url-pattern>/FrontController</url-pattern>
+   </servlet-mapping>
 </web-app>
+```
 ----------------
 5. Mark folders: java - source root; resources - resources root.
 ----------------
@@ -108,11 +124,13 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
 11. Replace body with req.getRequestDispatcher("index.jsp").forward(req, resp);
 ----------------
 12. Create file web/index.jsp with
+```
 <html>
     <body>
         <h1>Hello my custom servlet</h1>
     </body>
 </html>
+```
 ----------------
 13. set JAVA_HOME or JRE_HOME in environment variable (It is required to start server).
 ----------------
